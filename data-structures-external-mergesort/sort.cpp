@@ -8,6 +8,7 @@
 
 #include "sort.hpp"
 
+// load the file then save random numbers to it
 void ExternalMergeSort::randomize(const char* filename, int size) {
     std::ofstream ofs(filename, std::fstream::out | std::fstream::trunc);
     if (ofs.fail()) {
@@ -17,13 +18,12 @@ void ExternalMergeSort::randomize(const char* filename, int size) {
     while (size-->0) {
         int n = rand() % 10000 + 1;
         ofs << n << " ";
-        std::cout << n << " ";
     }
-    std::cout << std::endl << std::endl << std::endl;
     
     ofs.close();
 }
 
+// load the file into two temp files then start the external merge
 void ExternalMergeSort::start(const char* filename) {
     std::ifstream input(filename, std::fstream::in);
     std::ofstream temp1("/Users/alex/repos/data-structures-external-mergesort/temp/temp1.txt",
@@ -52,7 +52,7 @@ void ExternalMergeSort::start(const char* filename) {
           "/Users/alex/repos/data-structures-external-mergesort/temp/incr2.txt",
           2);
     
-    if (dankMemes) {
+    if (fileSwitch) {
         finalMerge("/Users/alex/repos/data-structures-external-mergesort/temp/temp1.txt",
                    "/Users/alex/repos/data-structures-external-mergesort/temp/temp2.txt");
     }
@@ -63,6 +63,7 @@ void ExternalMergeSort::start(const char* filename) {
     }
 }
 
+// merge two files into two different files, while comparing numbers
 void ExternalMergeSort::merge(const char *inFile1, const char *inFile2,
                               const char *outFile1, const char *outFile2, int runSize) {
     if (runSize > ARRAY_SIZE / 2) return; // should be sorted by then
@@ -153,10 +154,11 @@ void ExternalMergeSort::merge(const char *inFile1, const char *inFile2,
     incr1.close();
     incr2.close();
     
-    dankMemes = !dankMemes;
+    fileSwitch = !fileSwitch;
     merge(outFile1, outFile2, inFile1, inFile2, runSize*2);
 }
 
+// merge the two files back into one
 void ExternalMergeSort::finalMerge(const char *file1, const char *file2) {
     std::ifstream in1(file1, std::fstream::in);
     std::ifstream in2(file2, std::fstream::in);

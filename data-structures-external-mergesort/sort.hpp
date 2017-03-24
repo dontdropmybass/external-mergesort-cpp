@@ -26,6 +26,6 @@ public:
 private:
     void merge(const char* inFile1, const char* inFile2, const char* outFile1, const char* outfile2, int runSize);
     void finalMerge(const char* file1, const char* file2);
-    bool dankMemes = false;
+    bool fileSwitch = false;
 };
 #endif /* sort_hpp */
