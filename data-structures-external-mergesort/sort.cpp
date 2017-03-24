@@ -31,34 +31,16 @@ void ExternalMergeSort::start(const char* filename) {
     std::ofstream temp2("/Users/alex/repos/data-structures-external-mergesort/temp/temp2.txt",
                         std::fstream::out | std::fstream::trunc);
     
-    int l,r,a,b;
+    int a;
     bool current = true;
     while (!input.eof()) {
         input >> a;
-        if (!input.eof()) {
-            input >> b;
-            if (a > b) {
-                r = a;
-                l = b;
-            }
-            else {
-                l = a;
-                r = b;
-            }
-            if (current) {
-                temp1 << l << " " << r << " ";
-            }
-            else {
-                temp2 << l << " " << r << " ";
-            }
+        
+        if (current) {
+            temp1 << std::to_string(a) << " ";
         }
         else {
-            if (current) {
-                temp1 << a << " ";
-            }
-            else {
-                temp2 << a << " ";
-            }
+            temp2 << std::to_string(a) << " ";
         }
         
         current = !current;
@@ -104,10 +86,10 @@ void ExternalMergeSort::merge(const char *inFile1, const char *inFile2,
             if (a > b) {
                 i++;
                 if (current) {
-                    incr1 << b << " " << a << " ";
+                    incr1 << std::to_string(b) << " ";
                 }
                 else {
-                    incr2 << b << " " << a << " ";
+                    incr2 << std::to_string(b) << " ";
                 }
                 if (!temp2.eof()) {
                     temp2 >> b;
@@ -119,10 +101,10 @@ void ExternalMergeSort::merge(const char *inFile1, const char *inFile2,
             else {
                 j++;
                 if (current) {
-                    incr1 << a << " " << b << " ";
+                    incr1 << std::to_string(a) << " ";
                 }
                 else {
-                    incr2 << a << " " << b << " ";
+                    incr2 << std::to_string(a) << " ";
                 }
                 if (!temp1.eof()) {
                     temp1 >> a;
@@ -134,12 +116,11 @@ void ExternalMergeSort::merge(const char *inFile1, const char *inFile2,
         }
         else if (i<runSize/2) {
             i++;
-            temp1 >> a;
             if (current) {
-                incr1 << a << " ";
+                incr1 << std::to_string(a) << " ";
             }
             else {
-                incr2 << a << " ";
+                incr2 << std::to_string(a) << " ";
             }
             if (!temp1.eof()) {
                 temp1 >> a;
@@ -148,14 +129,14 @@ void ExternalMergeSort::merge(const char *inFile1, const char *inFile2,
                 i = runSize;
             }
         }
-        else if (j<runSize/2&&!temp2.eof()) {
+        else if (j<runSize/2) {
             j++;
             temp2 >> b;
             if (current) {
-                incr1 << b << " ";
+                incr1 << std::to_string(b) << " ";
             }
             else {
-                incr2 << b << " ";
+                incr2 << std::to_string(b) << " ";
             }
             if (!temp2.eof()) {
                 temp2 >> b;
@@ -180,24 +161,56 @@ void ExternalMergeSort::finalMerge(const char *file1, const char *file2) {
     std::ifstream in1(file1, std::fstream::in);
     std::ifstream in2(file2, std::fstream::in);
     std::ofstream out(SORTED_FILENAME, std::fstream::out | std::fstream::trunc);
-    int a,b;
-    while (!in1.eof()||!in2.eof()) {
-        if (in1.eof()) {
-            in2 >> a;
-            out << a << " ";
-        }
-        else if (in2.eof()) {
-            in1 >> a;
-            out << a << " ";
-        }
-        else {
-            in1 >> a;
-            in2 >> b;
+    
+    int a,b,i,j,runSize;
+    i = 0;
+    j = 0;
+    in1 >> a;
+    in2 >> b;
+    
+    while (i+j<ARRAY_SIZE) {
+        
+        if (i<ARRAY_SIZE/2&&j<ARRAY_SIZE/2) {
             if (a > b) {
-                out << b << " " << a << " ";
+                i++;
+                out << std::to_string(b) << " ";
+                if (!in2.eof()) {
+                    in2 >> b;
+                }
+                else {
+                    j = runSize;
+                }
             }
             else {
-                out << a << " " << b << " ";
+                j++;
+                out << std::to_string(a) << " ";
+                if (!in1.eof()) {
+                    in1 >> a;
+                }
+                else {
+                    i = runSize;
+                }
+            }
+        }
+        else if (i<runSize/2) {
+            i++;
+            out << std::to_string(a) << " ";
+            if (!in1.eof()) {
+                in1 >> a;
+            }
+            else {
+                i = runSize;
+            }
+        }
+        else if (j<runSize/2) {
+            j++;
+            in2 >> b;
+            out << std::to_string(b) << " ";
+            if (!in2.eof()) {
+                in2 >> b;
+            }
+            else {
+                j = runSize;
             }
         }
     }
