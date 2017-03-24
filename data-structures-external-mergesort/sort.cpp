@@ -162,7 +162,7 @@ void ExternalMergeSort::finalMerge(const char *file1, const char *file2) {
     std::ifstream in2(file2, std::fstream::in);
     std::ofstream out(SORTED_FILENAME, std::fstream::out | std::fstream::trunc);
     
-    int a,b,i,j,runSize;
+    int a,b,i,j;
     i = 0;
     j = 0;
     in1 >> a;
@@ -178,7 +178,7 @@ void ExternalMergeSort::finalMerge(const char *file1, const char *file2) {
                     in2 >> b;
                 }
                 else {
-                    j = runSize;
+                    j = ARRAY_SIZE/2;
                 }
             }
             else {
@@ -188,21 +188,21 @@ void ExternalMergeSort::finalMerge(const char *file1, const char *file2) {
                     in1 >> a;
                 }
                 else {
-                    i = runSize;
+                    i = ARRAY_SIZE/2;
                 }
             }
         }
-        else if (i<runSize/2) {
+        else if (i<ARRAY_SIZE/2) {
             i++;
             out << std::to_string(a) << " ";
             if (!in1.eof()) {
                 in1 >> a;
             }
             else {
-                i = runSize;
+                i = ARRAY_SIZE/2;
             }
         }
-        else if (j<runSize/2) {
+        else if (j<ARRAY_SIZE/2) {
             j++;
             in2 >> b;
             out << std::to_string(b) << " ";
@@ -210,7 +210,7 @@ void ExternalMergeSort::finalMerge(const char *file1, const char *file2) {
                 in2 >> b;
             }
             else {
-                j = runSize;
+                j = ARRAY_SIZE/2;
             }
         }
     }
